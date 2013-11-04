@@ -1,0 +1,38 @@
+Listage des tâches
+==================
+
+1. Attention + perception
+
+- Tourner la tête vers un signal sonore
+- Reconnaître des objets
+  -> Ressortir un string à partir de l'image
+- Traitement capteurs
+  -> String à partir des capteurs
+
+-> Thibaud
+-> Fabien
+
+2. Comportement
+- Définir un modèle, essayer des variantes
+  -> En entrée :
+     -> perception : string
+     -> sensation : string
+  -> En sortie :
+     -> état émotionnel : string
+
+-> Ludo
+-> David
+
+3. Actions
+   -> Mouvement + son éventuellement
+
+- Crainte
+  -> Fabien
+
+- Surprise
+  -> Thibaud
+- Excitation
+- Tristesse
+  -> David
+- Soulagement
+  -> Ludo
