@@ -1,0 +1,69 @@
+Modèle Laplacien:
+=================
+
+On a deux types d'information qui survienne dans le même ordre.
+1. Perception d'un objet, d'un visage ou autre.
+2. Stimuli positif ou négatif.
+
+On a donc deux ensembles :
+- O, pour les objets
+- S, les sensations
+
+Avant d'apercevoir un objet, on peut établir pour tout i:
+p(O_i) : la probabilité de voir l'objet i
+
+Ainsi, la surprise serait par exemple le fait de voir un objet qu'on avait très
+peu de chance d'apercevoir.
+
+De même, on peut définir la probabilité qu'une certaine sensation j suive la
+perception d'un objet i comme :
+p(S_j | O_i)
+
+Expérience
+----------
+Une expérience peut être définie comme l'objet perçu, suivi de l'émotion
+ressentie à la suite de la perception.
+Les expériences du robot peuvent être définies comme suit:
+E : ensemble des expériences
+E(O_i) : ensemble des expériences de l'objet i
+E(O_i, S_j) : ensemble des expériences de l'objet i, suivies par l'émotion
+
+La version naïve serait de définir la probabilité de voir un objet comme :
+p(O_i) = |E(O_i)| / |E|
+
+Le problème de cette théorie est que les éléments qui n'ont pas encore été
+perçus auront une probabilité d'arriver de 0. Afin de palier ce problème, on
+peut utiliser un lissage Laplacien, conduisant à la formule suivante.
+
+p(O_i) = (|E(O_i)| + k) / (|E| + |O| * k)
+
+le k choisi doit être positif et plus il est élevé, plus les probabilités seront
+lissées.
+
+On peut utiliser la même technique pour décrire la probabilité qu'une sensation
+suive la perception d'un certain objet.
+
+p(S_j | O_i) = (|E(O_i, S_j)| + k) / (|E(O_i)| + |S| * k)
+
+L'essentiel consiste donc ensuite à choisir les seuils d'activation des
+émotions, en produisant typiquement une attente nulle lorsque P(S_j | O_i) est
+proche de 1 / |S|, ou de la surprise quand P(O_i) est beaucoup plus faible que
+1 / |O|.
+
+
+Émotions en fonction des probas
+-------------------------------
+Trois phases dans l'émotion:
+- Objet inattendu
+  - surprise
+- Anticipation
+  - excitation (+)
+  - crainte(-)
+- Prédiction infirmée
+  - Tristesse (excitation sans récompense)
+  - Soulagement (crainte sans punition)
+
+TODOS Éventuels
+---------------
+- Ajout d'un paramètre sur le temps pondérant le score
+- Ajout d'un paramètre d'intensité
