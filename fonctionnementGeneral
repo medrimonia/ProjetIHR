@@ -1,0 +1,53 @@
+État
+----
+Émotion à produire / en cours de production
+- Surprise
+- Crainte
+- Excitation
+- Tristesse
+- Soulagement
+
+Stimulis perceptifs
+-------------------
+- Mouton
+- Mouchoir
+- ...
+
+Stimulis sensoriels
+-------------------
+- Caresse
+- Punition
+
+
+Chaîne de réaction
+==================
+
+Attente du stimuli
+------------------
+Tant qu'aucun objet n'est reconnu, on attend.
+-> Éventuellement, on ajoute un comportement quand ça fait trop longtemps
+   qu'on attend
+
+Prédiction
+----------
+Un objet a été perçu, on analyse les expériences emmagasinées afin de prédire
+"ce qui va arriver" (bien ou pas bien).
+prediction = null
+if   p(objet) est très faible:
+     exprime(surprise)
+elif p(+) est grand:
+   prediction = "Excitation"
+elif p(-) est grand:
+   prediction = "Crainte"
+exprime(prediction)
+
+Confrontation de la prédiction à la réalité
+-------------------------------------------
+#sensation doit être mis à jour
+action = null
+if prediction != null:
+   if prediction == "Excitation" and sensation != "+":
+      action = "Tristesse"
+   if prediction == "Crainte" and sensation != "-":
+      action = "Soulagement"
+exprime(action)
