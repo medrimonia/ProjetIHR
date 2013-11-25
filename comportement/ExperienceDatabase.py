@@ -11,7 +11,7 @@ stimuliValues["Caresse"] = "+"
 stimuliValues["Tape"] = "-"
 
 def surpriseThreshold():
-    return 0.5 * 1.0 / len(stimuliList)
+    return 0.3 * 1.0 / len(stimuliList)
 
 def fearThreshold():
     return 1.5 * 1.0 / len(feelingList)
@@ -124,5 +124,19 @@ if __name__ == "__main__":
     model.addStimuli("Mouton")
     model.addStimuli("Caresse")
     model.addStimuli("Mouton")
+    model.addStimuli("Caresse")
+    model.addStimuli("Mouton")
+    model.addStimuli("Tape")
+    model.addStimuli("Mouton")
+    model.addStimuli("Caresse")
+    model.addStimuli("Mouton")
+    model.addStimuli("Caresse")
+    model.addStimuli("Mouton")
+    model.addStimuli("Tape")
+    model.addStimuli("Mouchoir")
+    model.addStimuli("Tape")
+    model.addStimuli("Mouchoir")
+    model.addStimuli("Tape")
+    model.addStimuli("Mouchoir")
     print(model.reaction())
     
