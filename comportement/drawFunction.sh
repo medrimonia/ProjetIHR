@@ -3,7 +3,7 @@
 FILE_NAME=$1;
 
 gnuplot -persist <<PLOT
-set xrange [0:15]
+set xrange [0:100]
 set yrange [0:1]
 
 set xlabel "Time[s]"

@@ -1,12 +1,16 @@
 #!/usr/bin/python3
 
 import math
-t1 = 1#val(e) = +
-t2 = 2#val(e) = +
-t3 = 3#val(e) = -
+t1 = 1  # val(e) = +
+t2 = 2  # val(e) = +
+t3 = 3  # val(e) = -
+t4 = 50 # val(e) = nothing
+
+alpha = 0.5
+tau = 5
 
 def score(dt):
-    return math.e ** (-math.sqrt(dt))
+    return math.e ** (-((dt / tau) ** alpha))
 
 def casPossible(k):
     casPossible = 3 * k
@@ -16,6 +20,8 @@ def casPossible(k):
         casPossible += score(t - t2)
     if (t > t3):
         casPossible += score(t - t3)
+    if (t > t4):
+        casPossible += score(t - t4)
     return casPossible
 
 #p(val = -)
@@ -37,9 +43,11 @@ def p2(t,k):
 #p(val = None)
 def p3(t,k):
     casFavorable = k
+    if (t > t4):
+        casFavorable += score(t - t4)
     return casFavorable / casPossible(k)
 
-k = 0.1
+k = 0.02
 timeToWatch = 100
 for dixT in range(0, 10 * timeToWatch, 1):
     t = dixT / 10
