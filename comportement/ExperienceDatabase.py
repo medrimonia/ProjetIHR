@@ -1,23 +1,38 @@
 #!/usr/bin/python3
 
-#TODO objectList and feeling list might be filled dynamically too
-objectList = ["A", "B", "C"]
+#TODO stimuliList and feeling list might be filled dynamically too
+stimuliList = ["Mouchoir", "Mouton", "Caresse", "Tape"]
 feelingList = ["+", "-", "Nothing"]
+
+stimuliValues = {}
+for s in stimuliList:
+    stimuliValues[s] = "Nothing"
+stimuliValues["Caresse"] = "+"
+stimuliValues["Tape"] = "-"
+
+def surpriseThreshold():
+    return 0.5 * 1.0 / len(stimuliList)
+
+def fearThreshold():
+    return 1.5 * 1.0 / len(feelingList)
+
+def excitationThreshold():
+    return 1.5 * 1.0 / len(feelingList)
 
 class Experience:
 
-    # Initialize an experience with an object perceived and an
+    # Initialize an experience with a stimuli perceived and an
     # associated feeling
-    # perception must be a member of the object list
+    # perception must be a member of the stimuli list
     # feeling must be a member of the feelingList
     def __init__(self, perception, feeling):
         self.p = perception
         self.f = feeling
 
 
-# This class can store various experiences concerning an object.
+# This class can store various experiences concerning a stimuli.
 # It is mainly a python dictionnary with convenient methods for probabilities
-class ObjectExperiences:
+class StimuliExperiences:
     
     def __init__(self):
         self.experiences={}
@@ -33,7 +48,7 @@ class ObjectExperiences:
     def nbExperiencesWithFeeling(self, feeling):
         return len(self.experiences[feeling])
  
-    # experience must be an object of the Experience class
+    # experience must be a stimuli of the Experience class
     def addExperience(self, experience):
         feeling = experience.f
         self.experiences[feeling] += [experience]
@@ -48,8 +63,8 @@ class ExperienceDatabase:
 
     def __init__(self):
         self.experiences={}
-        for o in objectList:
-            self.experiences[o] = ObjectExperiences()
+        for s in stimuliList:
+            self.experiences[s] = StimuliExperiences()
 
     def addExperience(self, experience):
         self.experiences[experience.p].addExperience(experience)
@@ -60,33 +75,54 @@ class ExperienceDatabase:
             n += val.nbExperiences()
         return n
 
-    def nbExperiencesWithObject(self, o):
-        return self.experiences[o].nbExperiences()
+    def nbExperiencesWithStimuli(self, s):
+        return self.experiences[s].nbExperiences()
 
-    def smoothedObjectProbability(self, o, k):
-        numerator = self.nbExperiencesWithObject(o) + k
-        denominator = self.nbExperiences() + k * len(objectList)
+    def smoothedStimuliProbability(self, s, k):
+        numerator = self.nbExperiencesWithStimuli(s) + k
+        denominator = self.nbExperiences() + k * len(stimuliList)
         return numerator / denominator
 
     # return laplacian smoothed probability of P(f|o)
-    # o : object
-    def smoothedFeelingProbability(self, o, feeling, k):
-        return self.experiences[o].smoothedProbability(feeling, k)
+    # s : stimuli
+    def smoothedFeelingProbability(self, s, feeling, k):
+        return self.experiences[s].smoothedProbability(feeling, k)
         
 
+class PredictiveModel:
+    def __init__(self, k):
+        self.experiences = ExperienceDatabase()
+        self.lastStimuli = None
+        self.k = k
+
+    def addStimuli(self, newStimuli):
+        if (self.lastStimuli != None):
+            e = Experience(self.lastStimuli, stimuliValues[newStimuli])
+            self.experiences.addExperience(e)
+        self.lastStimuli = newStimuli
+
+    def feelingProbability(self, feeling):
+        return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k);
+
+    def reaction(self):
+        if self.lastStimuli == None:
+            return "nothing"
+        pLastStimuli = self.experiences.smoothedStimuliProbability(self.lastStimuli, self.k)
+        if (pLastStimuli < surpriseThreshold()):
+            return "surprise"
+        pSomethingBad = self.feelingProbability("-")
+        if (pSomethingBad > fearThreshold()):
+            return "fear"
+        pSomethingGood = self.feelingProbability("+")
+        if (pSomethingGood > excitationThreshold()):
+            return "excitation"
+        return "nothing"
+
+
 if __name__ == "__main__":
-    db = ExperienceDatabase()
-    print("Number of experiences : ", db.nbExperiences())
-    print("P(A) = ", db.smoothedObjectProbability("A",1))
-    print("P(+|A) = ", db.smoothedFeelingProbability("A","+",1))
-    print("P(-|A) = ", db.smoothedFeelingProbability("A","-",1))
-    print("P(+|B) = ", db.smoothedFeelingProbability("B","+",1))
-    print("-----------------------------")
-    e1 = Experience("A","+")
-    db.addExperience(e1)
-    print("Number of experiences : ", db.nbExperiences())
-    print("P(A) = ", db.smoothedObjectProbability("A",1))
-    print("P(+|A) = ", db.smoothedFeelingProbability("A","+",1))
-    print("P(-|A) = ", db.smoothedFeelingProbability("A","-",1))
-    print("P(+|B) = ", db.smoothedFeelingProbability("B","+",1))
+    model = PredictiveModel(1)
+    model.addStimuli("Mouton")
+    model.addStimuli("Caresse")
+    model.addStimuli("Mouton")
+    print(model.reaction())
     
