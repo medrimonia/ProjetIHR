@@ -1,0 +1,55 @@
+\subsubsection{Modèle final utilisé}
+\paragraph{}
+Afin de rendre plus dynamique notre modèle d'apprentissage et de faciliter la
+mise à jour des connaissances, nous avons décidé d'utiliser une version
+enrichie du modèle Laplacien. Pour ce faire, nous avons décidé de prendre en
+compte la temporalité. 
+
+%Caractéristiques attendues
+\paragraph{}
+Les caractéristiques que nous souhaitions remplir avec notre modèle prédictif
+étaient les suivantes :
+\begin{itemize}
+\item Favoriser les éléments récents, particulièrement à court-terme
+\item Prendre en compte le nombre d'occurence des expériences,
+      particulièrement à moyen terme
+\item Oublier les expériences très vieilles, en convergeant à long terme vers
+      une loi uniforme, cette loi uniforme doit aussi être présente dans le
+      cas d'une absence totale d'expériences.
+\end{itemize}
+
+% Experience
+\paragraph{}
+Nous avons donc décidé de définir une expérience sous
+la forme suivante~:
+$$x = \{s, v, t\}$$
+\begin{itemize}
+\item $s(x)$ le stimuli précédent $x$
+\item $v(x)$ la valeur associée à $x$
+\item $t(x)$ le temps auquel s'est produit $x$
+\end{itemize}
+
+% Ensembles
+\paragraph{}
+Dans le cadre de nos expériences, il existe plusieurs ensembles qui vont
+servir de base à l'évaluation des expériences~:
+\begin{itemize}
+\item $S=\{caresse, claque, mouchoir, ...\}$~: L'ensemble des stimulis.
+\item $V=\{+,-,rien\}$~: Les valeurs associées aux stimulis.
+\item $E$~: L'ensemble des expériences
+\item $E(s)$ avec $s \in S$~: L'ensemble des expériences précédées par le
+      stimuli $s$.
+\item $E(s,v)$ avec $s \in S$ et $v \in V$~: L'ensemble des expériences
+      précédées par le stimuli $s$ avec comme valeur associée $v$.
+\end{itemize}
+
+% Probabilités
+\paragraph{}
+On notera:
+\begin{itemize}
+\item $P(s,t)$~: La probabilité du stimuli $s$ à l'instant $t$.
+\item $P(v|s, t)$~: La probabilité que la valeur $v$ apparaisse en fonction
+      de $t$, sachant que le dernier stimuli perçu était $s$.
+\end{itemize}
+Afin de débuter par une loi uniforme, nous avons gardé une loi ayant une
+forme commune avec celle du lissage de Laplace.
