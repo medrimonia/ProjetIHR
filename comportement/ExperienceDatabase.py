@@ -2,6 +2,8 @@
 
 import math
 
+printHistory = False
+
 #TODO stimuliList and feeling list might be filled dynamically too
 stimuliList = ["Mouchoir", "Mouton", "Caresse", "Tape"]
 feelingList = ["+", "-", "Nothing"]
@@ -108,6 +110,7 @@ class PredictiveModel:
     def __init__(self, k):
         self.experiences = ExperienceDatabase()
         self.lastStimuli = None
+        self.stimuliTime = {}
         self.k = k
 
     def addStimuli(self, time, newStimuli):
@@ -115,9 +118,20 @@ class PredictiveModel:
             e = Experience(self.lastStimuli, stimuliValues[newStimuli], time)
             self.experiences.addExperience(e)
         self.lastStimuli = newStimuli
+        if not time in self.stimuliTime:
+            self.stimuliTime[time] = []
+        self.stimuliTime[time] += [newStimuli]
 
     def feelingProbability(self, feeling, time, tau, alpha):
-        return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k, time, tau, alpha);
+        stimuliBeforeTime = [ s for t,s in self.stimuliTime.items() if t <= time]
+        if not stimuliBeforeTime:
+            return 0
+        stimuliAtTime = stimuliBeforeTime[-1]
+        lastStimuliAtTime = stimuliAtTime[-1]
+        if printHistory:
+            return self.experiences.smoothedFeelingProbability(lastStimuliAtTime, feeling, self.k, time, tau, alpha);
+        else:
+            return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k, time, tau, alpha);
 
     def reaction(self, time, tau, alpha):
         if self.lastStimuli == None:
@@ -149,12 +163,12 @@ if __name__ == "__main__":
     k = math.e**(- (c / defaultTau)**defaultAlpha)
     model = PredictiveModel(k)
     model.addStimuli( 1, "Mouton")
-    model.addStimuli( 1, "Caresse")
-    model.addStimuli( 2, "Mouton")
     model.addStimuli( 2, "Caresse")
-    model.addStimuli( 3, "Mouton")
-    model.addStimuli( 3, "Tape")
-    model.addStimuli( 4, "Mouton")
+    model.addStimuli( 5, "Mouton")
+    model.addStimuli( 6, "Caresse")
+    model.addStimuli( 10, "Mouton")
+    model.addStimuli( 11, "Tape")
+    model.addStimuli( 15, "Mouton")
     timeToWatch = 100
     for dixT in range(0, 10 * timeToWatch, 1):
         t = dixT / 10
