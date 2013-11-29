@@ -13,8 +13,9 @@ set key autotitle columnhead
 
 set tics out
 
-plot '$FILE_NAME' using 1:2 with lines lw 2 title "p(-)", \
-     '$FILE_NAME' using 1:3 with lines lw 2 title "p(+)", \
-     '$FILE_NAME' using 1:4 with lines lw 2 title "p(Nothing)"
+plot '$FILE_NAME' using 1:2 with lines lw 2 title "p(-)",       \
+     '$FILE_NAME' using 1:3 with lines lw 2 title "p(+)",       \
+     '$FILE_NAME' using 1:4 with lines lw 2 title "p(Nothing)", \
+     '$FILE_NAME' using 1:5 with lines lw 2 title "p(surprise)"
 quit
 PLOT

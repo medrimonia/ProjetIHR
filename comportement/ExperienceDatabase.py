@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import math
+
 #TODO stimuliList and feeling list might be filled dynamically too
 stimuliList = ["Mouchoir", "Mouton", "Caresse", "Tape"]
 feelingList = ["+", "-", "Nothing"]
@@ -19,15 +21,25 @@ def fearThreshold():
 def excitationThreshold():
     return 1.5 * 1.0 / len(feelingList)
 
+def customScoreFormula(dt, tau, alpha):
+    return math.e**(- (dt / tau)**alpha)
+
 class Experience:
 
     # Initialize an experience with a stimuli perceived and an
     # associated feeling
     # perception must be a member of the stimuli list
     # feeling must be a member of the feelingList
-    def __init__(self, perception, feeling):
+    def __init__(self, perception, feeling, time):
         self.p = perception
         self.f = feeling
+        self.t = time
+
+    def score(self, t, tau, alpha):
+        if t >= self.t:
+            return customScoreFormula(t - self.t, tau, alpha)
+        else:
+            return 0
 
 
 # This class can store various experiences concerning a stimuli.
@@ -39,26 +51,25 @@ class StimuliExperiences:
         for f in feelingList:
             self.experiences[f] = []
 
-    def nbExperiences(self):
+    def scoreExperiences(self, time, tau, alpha):
         n = 0
         for key, val in self.experiences.items():
-            n += len(val)
+            n += sum([e.score(time, tau, alpha) for e in val])
         return n
 
-    def nbExperiencesWithFeeling(self, feeling):
-        return len(self.experiences[feeling])
+    def scoreExperiencesWithFeeling(self, feeling, time, tau, alpha):
+        return sum([e.score(time, tau, alpha) for e in self.experiences[feeling]])
  
     # experience must be a stimuli of the Experience class
     def addExperience(self, experience):
         feeling = experience.f
         self.experiences[feeling] += [experience]
 
-    def smoothedProbability(self, feeling, k):
-        numerator = self.nbExperiencesWithFeeling(feeling) + k
-        denominator = self.nbExperiences() + k * len(feelingList)
+    def smoothedProbability(self, feeling, k, time, tau, alpha):
+        numerator = self.scoreExperiencesWithFeeling(feeling, time, tau, alpha) + k
+        denominator = self.scoreExperiences(time, tau, alpha) + k * len(feelingList)
         return numerator / denominator
 
-# Storing
 class ExperienceDatabase:
 
     def __init__(self):
@@ -69,74 +80,76 @@ class ExperienceDatabase:
     def addExperience(self, experience):
         self.experiences[experience.p].addExperience(experience)
 
-    def nbExperiences(self):
+    def scoreExperiences(self, time, tau, alpha):
         n = 0
         for key, val in self.experiences.items():
-            n += val.nbExperiences()
+            n += val.scoreExperiences(time, tau, alpha)
         return n
 
-    def nbExperiencesWithStimuli(self, s):
-        return self.experiences[s].nbExperiences()
+    def scoreExperiencesWithStimuli(self, s, time, tau, alpha):
+        return self.experiences[s].scoreExperiences(time, tau, alpha)
 
-    def smoothedStimuliProbability(self, s, k):
-        numerator = self.nbExperiencesWithStimuli(s) + k
-        denominator = self.nbExperiences() + k * len(stimuliList)
+    def smoothedStimuliProbability(self, s, k, time, tau, alpha):
+        numerator = self.scoreExperiencesWithStimuli(s, time, tau, alpha) + k
+        denominator = self.scoreExperiences(time, tau, alpha) + k * len(stimuliList)
         return numerator / denominator
 
     # return laplacian smoothed probability of P(f|o)
     # s : stimuli
-    def smoothedFeelingProbability(self, s, feeling, k):
-        return self.experiences[s].smoothedProbability(feeling, k)
+    def smoothedFeelingProbability(self, s, feeling, k, time, tau, alpha):
+        return self.experiences[s].smoothedProbability(feeling, k, time, tau, alpha)
         
 
 class PredictiveModel:
-    def __init__(self, k):
+    def __init__(self, k, smartHistory = False):
+        ''' If smartHistory is set to True, feelingProbability will be
+        computed for the stimuli that occured just before the given time.
+        Otherwise feelingProbability is computed for the last stimuli added.'''
         self.experiences = ExperienceDatabase()
         self.lastStimuli = None
+        self.stimuliTime = {}
         self.k = k
+        self.smartHistory = smartHistory
 
-    def addStimuli(self, newStimuli):
+    def addStimuli(self, time, newStimuli):
         if (self.lastStimuli != None):
-            e = Experience(self.lastStimuli, stimuliValues[newStimuli])
+            e = Experience(self.lastStimuli, stimuliValues[newStimuli], time)
             self.experiences.addExperience(e)
         self.lastStimuli = newStimuli
+        if not time in self.stimuliTime:
+            self.stimuliTime[time] = []
+        self.stimuliTime[time] += [newStimuli]
 
-    def feelingProbability(self, feeling):
-        return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k);
+    def feelingProbability(self, feeling, time, tau, alpha):
+        stimuliBeforeTime = [ s for t,s in self.stimuliTime.items() if t <= time]
+        if not stimuliBeforeTime:
+            return 0
+        stimuliAtTime = stimuliBeforeTime[-1]
+        lastStimuliAtTime = stimuliAtTime[-1]
+        if self.smartHistory:
+            return self.experiences.smoothedFeelingProbability(lastStimuliAtTime, feeling, self.k, time, tau, alpha);
+        else:
+            return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k, time, tau, alpha);
 
-    def reaction(self):
+    def reactionProbaRepartition(self, time, tau, alpha):
+        pLastStimuli = self.experiences.smoothedStimuliProbability(self.lastStimuli, self.k, time, tau, alpha)
+        pSomethingBad = self.feelingProbability("-", time, tau, alpha)
+        pSomethingGood = self.feelingProbability("+", time, tau, alpha)
+        return pLastStimuli, pSomethingBad, pSomethingGood
+
+    def reaction(self, time, tau, alpha):
         if self.lastStimuli == None:
             return "nothing"
-        pLastStimuli = self.experiences.smoothedStimuliProbability(self.lastStimuli, self.k)
+
+        pLastStimuli, pSomethingBad, pSomethingGood = self.reactionProbaRepartition(time, tau, alpha)
+
         if (pLastStimuli < surpriseThreshold()):
             return "surprise"
-        pSomethingBad = self.feelingProbability("-")
+
         if (pSomethingBad > fearThreshold()):
             return "fear"
-        pSomethingGood = self.feelingProbability("+")
+
         if (pSomethingGood > excitationThreshold()):
             return "excitation"
+
         return "nothing"
-
-
-if __name__ == "__main__":
-    model = PredictiveModel(1)
-    model.addStimuli("Mouton")
-    model.addStimuli("Caresse")
-    model.addStimuli("Mouton")
-    model.addStimuli("Caresse")
-    model.addStimuli("Mouton")
-    model.addStimuli("Tape")
-    model.addStimuli("Mouton")
-    model.addStimuli("Caresse")
-    model.addStimuli("Mouton")
-    model.addStimuli("Caresse")
-    model.addStimuli("Mouton")
-    model.addStimuli("Tape")
-    model.addStimuli("Mouchoir")
-    model.addStimuli("Tape")
-    model.addStimuli("Mouchoir")
-    model.addStimuli("Tape")
-    model.addStimuli("Mouchoir")
-    print(model.reaction())
-    
