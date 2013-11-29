@@ -2,8 +2,11 @@
 \paragraph{}
 Afin de rendre plus dynamique notre modèle d'apprentissage et de faciliter la
 mise à jour des connaissances, nous avons décidé d'utiliser une version
-enrichie du modèle Laplacien. Pour ce faire, nous avons décidé de prendre en
-compte la temporalité. 
+enrichie du modèle Laplacien. Effectivement, au bout d'un certain temps,
+le nombre d'expériences accumulées devient si grand que si l'on essaye de lui
+faire changer son modèle sans le réinitialiser, il faudra un grand nombre
+d'expériences. Afin d'éviter cela, nous avons décider de prendre en compte la
+temporalité des événements
 
 %Caractéristiques attendues
 \paragraph{}
@@ -17,8 +20,6 @@ Les caractéristiques que nous souhaitions remplir avec notre modèle prédictif
       une loi uniforme, cette loi uniforme doit aussi être présente dans le
       cas d'une absence totale d'expériences.
 \end{itemize}
-
-%TODO expliquer pourquoi le lissage laplacien ne convient pas
 
 % Experience
 \paragraph{}
