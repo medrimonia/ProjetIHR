@@ -18,6 +18,8 @@ Les caractéristiques que nous souhaitions remplir avec notre modèle prédictif
       cas d'une absence totale d'expériences.
 \end{itemize}
 
+%TODO expliquer pourquoi le lissage laplacien ne convient pas
+
 % Experience
 \paragraph{}
 Nous avons donc décidé de définir une expérience sous
@@ -46,10 +48,74 @@ servir de base à l'évaluation des expériences~:
 % Probabilités
 \paragraph{}
 On notera:
+%TODO maybe find a better notation for probability dependent of time
 \begin{itemize}
-\item $P(s,t)$~: La probabilité du stimuli $s$ à l'instant $t$.
+\item $P(s, t)$~: La probabilité du stimuli $s$ à l'instant $t$.
 \item $P(v|s, t)$~: La probabilité que la valeur $v$ apparaisse en fonction
       de $t$, sachant que le dernier stimuli perçu était $s$.
 \end{itemize}
-Afin de débuter par une loi uniforme, nous avons gardé une loi ayant une
-forme commune avec celle du lissage de Laplace.
+\paragraph{}
+Afin de débuter par une loi uniforme, nous avons gardé des lois ayant une
+forme commune avec celle du lissage de Laplace. Celles-ci repose sur une
+fonction de score et peuvent être décrites ainsi~:
+$$P(s,t) = \frac{k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}
+                {|S| * k + \sum\limits_{x \in E} \mathrm{score}(x, t)}$$
+$$P(v| s, t) = \frac{k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}
+                {|S| * k + \sum\limits_{x \in E} \mathrm{score}(x, t)}$$
+
+\paragraph{}
+L'avantage de ces formules est que si on définit
+$\forall x \in E, \mathrm{score}(x, t) = 1$, alors les distributions sont
+exactement les mêmes que dans le cas d'un lissage Laplacien. En revanche, si
+l'ont définit la fonction de score ainsi~:
+$\forall x \in E, \mathrm{score}(x, t) = e^{-(t - t(x))}$ il devient évident que
+les événements récents auront plus de poids que les vieux. Cependant, cette
+fonction ne nous permettait pas d'obtenir un des aspects que nous souhaitions,
+l'importance du nombre d'expérience à moyen terme. Effectivement en l'absence
+de nouvelles expériences, tous les scores décroiront, laissant ainsi la loi
+tendre vers une loi uniforme.
+
+\paragraph{}
+Afin d'obtenir cet effet par le nombre d'expériences à moyen terme sans perdre
+l'effet de précédence à court terme, nous avons réfléchi à la fonction de
+score idéale à utiliser. Nous avons finalement abouti à la fonction suivante~:
+$e^{-(\frac{t-t(x)}{\tau})^{\alpha}}$
+
+\paragraph{}
+Cette fonction utilise un $\alpha < 1$ afin de diminuer le rapport~:
+$\frac{\mathrm{score}(x,t)}{\mathrm{score}(x, t + dt)}$ à moyen terme, sans
+pour autant l'affecter outre mesure à court terme. La constante $\tau$ permet
+de régler l'écoulement du temps au vu du score, elle peut servir pour
+déterminer l'échelle de la mémoire, afin de définir si le robot aura une
+mémoire qui s'étale sur des secondes ou des semaines.
+
+% ajout de graphiques
+
+\paragraph{}
+Le $k$ du lissage laplacien qui avait une valeur sémantique dans l'ancien
+modèle\footnote{Il représentait une initialisation avec $k$ expériences de
+chaque type de résultat possible.} n'est à présent plus très explicite et
+devient donc difficile à régler afin d'obtenir le résultat désiré. Cependant,
+ce $k$ étant une constante, il est parfaitement possible de l'exprimer
+autrement. Il devient beaucoup plus facile à utiliser en l'exprimant ainsi~:
+$$k = e^{-\left (\frac{k_t}{\tau} \right )^{\alpha}}$$
+
+\paragraph{}
+Même si l'expression du $k$ ainsi semble rendre l'objet plus complexe, il est
+ensuite beaucoup plus facile de comprendre sa signification dans la nouvelle
+formule. Imaginons une expérience fantôme $x_f$ tel que
+$\forall t, t - t(x_f) = k_t$, le score de cette expérience serait donc
+exactement le même que celui d'une expérience s'étant déroulée $k_t$ avant
+l'instant actuel. Sémantiquement le sens de ce k est donc devenu l'ajout d'une
+expérience virtuelle qui s'est déroulée $k_t$ avant l'instant auquel on évalue
+la probabilité.
+
+\paragraph{}
+Étant donné que nous avons remplacé une constante par une autre, cette
+dernière modification n'affecte absolument pas les propriétés que nous avons
+attribuée au système. En revanche, le réglage devient beaucoup plus facile
+étant donné que l'influence de $k_t$ est directement compréhensible alors
+que faire le lien entre une valeur de $k$ donnée et le moment de son entrée en
+action est beaucoup plus difficile.
+
+%TODO comparaison avec deux k_t différents
