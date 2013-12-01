@@ -48,8 +48,9 @@ def parseArguments():
     return args
 
 def printReactionGraph(model, timeToWatch, tau, alpha):
-    for dixT in range(0, 10 * timeToWatch, 1):
-        t = dixT / 10
+    nbDataBySecond = 20
+    for dixT in range(0, nbDataBySecond * timeToWatch, 1):
+        t = dixT / nbDataBySecond
         pSurprise, pBad, pGood = model.reactionProbaRepartition(t, tau, alpha)
         print(t, pBad, pGood, 1-pBad-pGood, pSurprise)
 

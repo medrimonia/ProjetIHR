@@ -4,6 +4,8 @@ SRC=partieI.tex         \
     partieII.tex        \
     PredictiveModel.tex
 
+IMAGES=comparison.png
+
 .PHONY: all clean
 
 all: $(BIN)
@@ -11,7 +13,10 @@ all: $(BIN)
 %.pdf: %.tex
 	pdflatex $< && pdflatex $<
 
-report.pdf: ${SRC}
+report.pdf: ${SRC} ${IMAGES}
+
+comparison.png: drawComparison.sh ../comportement/TestExperienceDatabase.py
+	./drawComparison.sh
 
 clean:
 	@ rm -f $(BIN) *~ *.log *.aux *.toc *.out
