@@ -1,4 +1,33 @@
-\subsubsection{Modèle final utilisé}
+%TODO préambule aux modèles de comportement
+%     -> pro-actif
+%     -> réactif
+%     -> confrontation aux expériences
+%TODO décrire les modèles évoqué en cours (éventuellement)
+
+\subsubsection{Apprentissage naïf}
+\paragraph{}
+Lorsque l'on souhaite apprendre un modèle sans disposer d'un échantillon
+préalable conséquent, il est nécessaire de prendre certaines précautions.
+Effectivement, si l'on lance un dé deux fois de suite et que l'on obtient deux
+6, cela ne suffit pas à conclure que la probabilité d'obtenir un 6 sur ce dé
+est supérieure à $\frac{1}{2}$. Pourtant, si l'on se base sur une estimation
+simpliste des probabilités, on pourrait approximer cette probabilité par la
+valeur 1.
+
+\paragraph{}
+En notant $E$ l'ensemble des expériences et $E_a$ le sous-ensemble de $E$
+respectant la propriété $a$, cette estimation de probabilité naïve se définit
+ainsi.
+
+$$P(a) = \frac{|E_a|}{|E|}$$
+
+\subsubsection{Lissage laplacien}
+\paragraph{}
+Le lissage laplacien permet d'éviter de favoriser des événements trop
+fortement lorsque le nombre d'expériences est faible.
+%TODO to be continued
+
+\subsubsection{Modèle probabiliste final}
 \paragraph{}
 Afin de rendre plus dynamique notre modèle d'apprentissage et de faciliter la
 mise à jour des connaissances, nous avons décidé d'utiliser une version
@@ -124,4 +153,3 @@ action est beaucoup plus difficile.
   \caption{Comparaison de l'évolution des probabilités en fonction de $k_t$}
   \includegraphics[width=\textwidth]{comparison.png}
 \end{figure}
-%TODO comparaison avec deux k_t différents
