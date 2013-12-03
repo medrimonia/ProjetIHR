@@ -1,8 +1,35 @@
-%TODO préambule aux modèles de comportement
-%     -> pro-actif
-%     -> réactif
-%     -> confrontation aux expériences
-%TODO décrire les modèles évoqué en cours (éventuellement)
+\paragraph{}
+L'objectif général qui nous a été donné était de lier une émotion à une
+interaction avec le robot. Pour ce faire, il ne suffit pas de simuler des
+émotions, il est aussi nécessaire de les faire correspondre à un événement
+identifiable par les personnes qui sont en train d'interagir avec lui. Il est
+donc nécessaire de produire une forme d'association entre les différents
+stimuli possibles et les actions simulant des émotions.
+
+\subsubsection{Contexte des émotions}
+En analysant les descriptions des contextes d'apparition des différentese
+émotions, nous avons pu classifier les comportements nécessaires en trois
+catégories distinctes.
+% 3 paragraphes distincts?
+\begin{itemize}
+\item Les comportements de réactivité
+      \begin{itemize}
+      \item L'excitation dans le cas d'un stimulus positif
+      \item La crainte dans le cas d'un stimulus négatif
+      \end{itemize}
+\item Les comportements de prédiction
+      \begin{itemize}
+      \item L'excitation dans le cas d'une anticipation de stimulus positif
+      \item La crainte dans le cas d'une anticipation de stimulus négatif
+      \end{itemize}
+\item Les comportements de correction de prédiction
+      \begin{itemize}
+      \item Le soulagement dans le cas d'une anticipation négative non réalisée
+      \item La tristesse dans le cas d'une anticipation positive non réalisée
+      \end{itemize}
+\end{itemize}
+
+%TODO décrire les modèles évoqué en cours (Rescorla Wagner)
 
 \subsubsection{Apprentissage naïf}
 \paragraph{}
@@ -24,8 +51,13 @@ $$P(a) = \frac{|E_a|}{|E|}$$
 \subsubsection{Lissage laplacien}
 \paragraph{}
 Le lissage laplacien permet d'éviter de favoriser des événements trop
-fortement lorsque le nombre d'expériences est faible.
-%TODO to be continued
+fortement lorsque le nombre d'expériences est faible. Le principe utilisé est
+de définir l'espace des possibilités et d'ajouter $k$ expérience pour chacune
+d'entre elles. Dans le cas du dés, il y aurait donc 6 résultats possibles. Ce
+nombre total de possibilité sera noté $n$. La formule associée au lissage
+laplacien devient donc la suivante.
+
+$$P(a) = \frac{|E_a| + k}{|E| + k * n} $$
 
 \subsubsection{Modèle probabiliste final}
 \paragraph{}
@@ -56,7 +88,7 @@ Nous avons donc décidé de définir une expérience sous
 la forme suivante~:
 $$x = \{s, v, t\}$$
 \begin{itemize}
-\item $s(x)$ le stimuli précédent $x$
+\item $s(x)$ le stimulus précédent $x$
 \item $v(x)$ la valeur associée à $x$
 \item $t(x)$ le temps auquel s'est produit $x$
 \end{itemize}
@@ -66,13 +98,13 @@ $$x = \{s, v, t\}$$
 Dans le cadre de nos expériences, il existe plusieurs ensembles qui vont
 servir de base à l'évaluation des expériences~:
 \begin{itemize}
-\item $S=\{caresse, claque, mouchoir, ...\}$~: L'ensemble des stimulis.
-\item $V=\{+,-,rien\}$~: Les valeurs associées aux stimulis.
+\item $S=\{caresse, claque, mouchoir, ...\}$~: L'ensemble des stimuli.
+\item $V=\{+,-,rien\}$~: Les valeurs associées aux stimuli.
 \item $E$~: L'ensemble des expériences
 \item $E(s)$ avec $s \in S$~: L'ensemble des expériences précédées par le
-      stimuli $s$.
+      stimulus $s$.
 \item $E(s,v)$ avec $s \in S$ et $v \in V$~: L'ensemble des expériences
-      précédées par le stimuli $s$ avec comme valeur associée $v$.
+      précédées par le stimulus $s$ avec comme valeur associée $v$.
 \end{itemize}
 
 % Probabilités
@@ -80,9 +112,9 @@ servir de base à l'évaluation des expériences~:
 On notera:
 %TODO maybe find a better notation for probability dependent of time
 \begin{itemize}
-\item $P(s, t)$~: La probabilité du stimuli $s$ à l'instant $t$.
+\item $P(s, t)$~: La probabilité du stimulus $s$ à l'instant $t$.
 \item $P(v|s, t)$~: La probabilité que la valeur $v$ apparaisse en fonction
-      de $t$, sachant que le dernier stimuli perçu était $s$.
+      de $t$, sachant que le dernier stimulus perçu était $s$.
 \end{itemize}
 \paragraph{}
 Afin de débuter par une loi uniforme, nous avons gardé des lois ayant une
