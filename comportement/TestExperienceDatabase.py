@@ -31,10 +31,10 @@ def parseArguments():
             (should be between 1 and 100)',                      \
             required=False)
 
-    parser.add_argument('--show-reaction-graph',                 \
+    parser.add_argument('--show-prediction-graph',                 \
             dest='show',                                         \
             action='store_true',                                 \
-            help='When this option is given, reaction probability\
+            help='When this option is given, prediction probability\
             over time is printed instead of resulting feeling')
 
     parser.add_argument('--smart-history',                       \
@@ -51,7 +51,7 @@ def printReactionGraph(model, timeToWatch, tau, alpha):
     nbDataBySecond = 20
     for dixT in range(0, nbDataBySecond * timeToWatch, 1):
         t = dixT / nbDataBySecond
-        pSurprise, pBad, pGood = model.reactionProbaRepartition(t, tau, alpha)
+        pSurprise, pBad, pGood = model.predictionProbaRepartition(t, tau, alpha)
         print(t, pBad, pGood, 1-pBad-pGood, pSurprise)
 
 if __name__ == "__main__":
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     if args.show:
         printReactionGraph(model, 100, args.tau, args.alpha)
     else:
-        print(model.reaction(15, args.tau, args.alpha))
+        print(model.prediction(15, args.tau, args.alpha))
 
 def test1():
     model = PredictiveModel(k)
@@ -89,5 +89,5 @@ def test1():
     model.addStimuli(14, "Mouchoir")
     model.addStimuli(15, "Tape")
     model.addStimuli(16, "Mouchoir")
-    print(model.reaction(17, args.tau, args.alpha))
-    print(model.reaction(20, args.tau, args.alpha))
+    print(model.prediction(17, args.tau, args.alpha))
+    print(model.prediction(20, args.tau, args.alpha))

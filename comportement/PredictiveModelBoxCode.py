@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import math
 
 #TODO stimuliList and feeling list might be filled dynamically too
@@ -153,3 +151,66 @@ class PredictiveModel:
             return "Excitation"
 
         return "Nothing"
+        
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+        pass
+
+    def onLoad(self):
+        k = customScoreFormula(c, tau, alpha)
+        self.predictiveModel = PredictiveModel(k, False)
+        self.actualTime = 0.0
+        self.lastStimuliTime = 0
+        self.isAfraid = False
+        self.isExcited = False
+        pass
+
+    def onUnload(self):
+        #~ puts code for box cleanup here
+        pass
+        
+    def treatNoPrediction(self):
+        if (self.isAfraid):
+            self.isAfraid = False
+            self.reaction("Relief")
+        if (self.isExcited):
+            self.isExcited = False
+            self.reaction("Sadness")
+    
+        
+    def onInput_timeTick(self):
+        self.actualTime += 1
+        dt = self.actualTime - self.lastStimuliTime
+        if (dt >= 5):
+            self.treatNoPrediction()
+        # TODO if time since last exp = 5 test for stimuli
+        pass
+        
+    def onInput_stimuli(self, stimulusName):
+        self.predictiveModel.addStimuli(self.actualTime, stimulusName)
+        if stimuliValues[stimulusName] == '+':
+            self.reaction("Excitation")
+        elif stimuliValues[stimulusName] == '-':
+            self.reaction("Fear");
+        else:
+            r = self.predictiveModel.prediction(self.actualTime, tau, alpha)
+            self.reaction(r)
+            if r == "Excitation":
+                self.isAfraid = False
+                self.isExcited = True
+            elif r == "Fear":
+                self.isExcited = False
+                self.isAfraid = True
+            elif r == "Nothing":
+                self.treatNoPrediction()
+        self.lastStimuliTime = self.actualTime
+        pass    
+
+    def onInput_onStop(self):
+        self.onUnload() #~ it is recommended to call onUnload of this box in a onStop method, as the code written in onUnload is used to stop the box as well
+        pass
+        
+c = 80
+tau = 5
+alpha = 0.5
