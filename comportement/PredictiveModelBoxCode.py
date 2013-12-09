@@ -129,17 +129,17 @@ class PredictiveModel:
         else:
             return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k, time, tau, alpha);
 
-    def reactionProbaRepartition(self, time, tau, alpha):
+    def predictionProbaRepartition(self, time, tau, alpha):
         pLastStimuli = self.experiences.smoothedStimuliProbability(self.lastStimuli, self.k, time, tau, alpha)
         pSomethingBad = self.feelingProbability("-", time, tau, alpha)
         pSomethingGood = self.feelingProbability("+", time, tau, alpha)
         return pLastStimuli, pSomethingBad, pSomethingGood
 
-    def reaction(self, time, tau, alpha):
+    def prediction(self, time, tau, alpha):
         if self.lastStimuli == None:
             return "Nothing"
 
-        pLastStimuli, pSomethingBad, pSomethingGood = self.reactionProbaRepartition(time, tau, alpha)
+        pLastStimuli, pSomethingBad, pSomethingGood = self.predictionProbaRepartition(time, tau, alpha)
 
         if (pLastStimuli < surpriseThreshold()):
             return "Surprise"
@@ -170,32 +170,32 @@ class MyClass(GeneratedClass):
         #~ puts code for box cleanup here
         pass
         
-    def treatNoReaction(self):
+    def treatNoPrediction(self):
         if (self.isAfraid):
             self.isAfraid = False
-            self.prediction("Relief")
+            self.reaction("Relief")
         if (self.isExcited):
             self.isExcited = False
-            self.prediction("Sadness")
+            self.reaction("Sadness")
     
         
     def onInput_timeTick(self):
         self.actualTime += 1
         dt = self.actualTime - self.lastStimuliTime
         if (dt >= 5):
-            self.treatNoReaction()
+            self.treatNoPrediction()
         # TODO if time since last exp = 5 test for stimuli
         pass
         
     def onInput_stimuli(self, stimulusName):
         self.predictiveModel.addStimuli(self.actualTime, stimulusName)
         if stimuliValues[stimulusName] == '+':
-            self.prediction("Excitation")
+            self.reaction("Excitation")
         elif stimuliValues[stimulusName] == '-':
-            self.prediction("Fear");
+            self.reaction("Fear");
         else:
-            r = self.predictiveModel.reaction(self.actualTime, tau, alpha)
-            self.prediction(r)
+            r = self.predictiveModel.prediction(self.actualTime, tau, alpha)
+            self.reaction(r)
             if r == "Excitation":
                 self.isAfraid = False
                 self.isExcited = True
@@ -203,7 +203,7 @@ class MyClass(GeneratedClass):
                 self.isExcited = False
                 self.isAfraid = True
             elif r == "Nothing":
-                self.treatNoReaction()
+                self.treatNoPrediction()
         self.lastStimuliTime = self.actualTime
         pass    
 
