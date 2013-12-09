@@ -131,25 +131,25 @@ class PredictiveModel:
         else:
             return self.experiences.smoothedFeelingProbability(self.lastStimuli, feeling, self.k, time, tau, alpha);
 
-    def reactionProbaRepartition(self, time, tau, alpha):
+    def predictionProbaRepartition(self, time, tau, alpha):
         pLastStimuli = self.experiences.smoothedStimuliProbability(self.lastStimuli, self.k, time, tau, alpha)
         pSomethingBad = self.feelingProbability("-", time, tau, alpha)
         pSomethingGood = self.feelingProbability("+", time, tau, alpha)
         return pLastStimuli, pSomethingBad, pSomethingGood
 
-    def reaction(self, time, tau, alpha):
+    def prediction(self, time, tau, alpha):
         if self.lastStimuli == None:
-            return "nothing"
+            return "Nothing"
 
-        pLastStimuli, pSomethingBad, pSomethingGood = self.reactionProbaRepartition(time, tau, alpha)
+        pLastStimuli, pSomethingBad, pSomethingGood = self.predictionProbaRepartition(time, tau, alpha)
 
         if (pLastStimuli < surpriseThreshold()):
-            return "surprise"
+            return "Surprise"
 
         if (pSomethingBad > fearThreshold()):
-            return "fear"
+            return "Fear"
 
         if (pSomethingGood > excitationThreshold()):
-            return "excitation"
+            return "Excitation"
 
-        return "nothing"
+        return "Nothing"
