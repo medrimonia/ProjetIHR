@@ -150,7 +150,7 @@ class PredictiveModel:
         if (pSomethingGood > excitationThreshold()):
             return "Excitation"
 
-        return "nothing"
+        return "Nothing"
         
 class MyClass(GeneratedClass):
     def __init__(self):
@@ -189,16 +189,21 @@ class MyClass(GeneratedClass):
         
     def onInput_stimuli(self, stimulusName):
         self.predictiveModel.addStimuli(self.actualTime, stimulusName)
-        r = self.predictiveModel.reaction(self.actualTime, tau, alpha)
-        self.prediction(r)
-        if r == "Excitation":
-            self.isAfraid = False
-            self.isExcited = True
-        elif r == "Fear":
-            self.isExcited = False
-            self.isAfraid = True
-        elif r == "Nothing":
-            self.treatNoReaction()         
+        if stimuliValues[stimulusName] == '+':
+            self.prediction("Excitation")
+        elif stimuliValues[stimulusName] == '-':
+            self.prediction("Fear");
+        else:
+            r = self.predictiveModel.reaction(self.actualTime, tau, alpha)
+            self.prediction(r)
+            if r == "Excitation":
+                self.isAfraid = False
+                self.isExcited = True
+            elif r == "Fear":
+                self.isExcited = False
+                self.isAfraid = True
+            elif r == "Nothing":
+                self.treatNoReaction()
         self.lastStimuliTime = self.actualTime
         pass    
 
