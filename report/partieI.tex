@@ -1,11 +1,82 @@
 \subsection{Question 1 : Test de Turing}
 % Description du test
-% Distinction comportement humain intelligent / stupide
-% DeepBlue -> new kind of intelligence
-% Introduction d'erreur pour paraître réaliste
-% Bots jeux vidéos (quake)
+\paragraph{}
+Le test de Turing a été proposé par Alan Turing en 1950. Le but était de
+pouvoir rapidement évaluer si un programme était intelligent sans avoir à
+établir une longue liste de critères à remplir pour accéder à ce statut. Le
+principe de ce test est simple~: un humain va poser des questions par écrit en
+cherchant à déterminer grâce aux réponses si son interlocuteur est un ordinateur
+ou un humain. S'il n'y parvient pas, le test de Turing est réussi.
 
-% Exemples : ...
+% Distinction comportement humain intelligent / stupide
+\paragraph{}
+Un point primordial à évoquer est que ce test ne se base sur la performance d'un
+programme pour effectuer une tâche particulière, il concerne plutôt la capacité
+d'un ordinateur à se faire passer pour un humain. Cette différence peut être
+comprise très facilement par le fait que si on demande de trouver le plus
+court chemin dans un graphe à 2000 sommets et que la réponse est juste et
+pratiquement instantanée, il est évident que l'interlocuteur n'est pas un
+humain.
+
+% Introduction d'erreur pour paraître réaliste
+\paragraph{}
+Afin de mieux couvrir ces erreurs que les humains sont capables de faire,
+certains programmes ajoutent volontairement des fautes de frappes à leurs
+réponses aléatoirement, ce qui a contribué à les rendre plus crédibles lors de
+concours de tests de Turing.
+
+% Bots jeux vidéos
+\paragraph{}
+La problèmatique d'obtenir des programmes capables d'agir comme des humains est
+aussi essentiel dans les jeux vidéos. Une catégorie particulièrement férue de
+bots est le FPS\footnote{First-person shooter : Jeu de tir à la première
+personne}. Effectivement, il est facile d'imaginer dans ce type de jeu des bots
+qui tirent toujours aux bons endroits, quelque soit la distance et ne manquent
+que très rarement leur cible si le projectile est assez rapide. Cependant, ce
+genre de comportement n'est pas du tout humain et très peu divertissant. Si même
+les meilleurs joueurs du monde se font écraser par les bots, leur intérêt lors
+de parties avec des joueurs humains est limité. Il existe même un concours
+\footnote{\url{http://botprize.org/}} qui consistait à placer des bots et des
+humains dans la même partie et à demander aux humains de distinguer les joueurs
+des intelligences artificielles.
+
+% capacité nécessaire / test du turing complet
+\paragraph{}
+Si le test de turing dans sa forme originale fait appel à du traitement du
+langage, à de l'analyse sémantique ainsi qu'à de l'apprentissage. Il existe une
+autre version plus adaptée aux robots~: le test de turing complet. Celui-ci
+inclut un signal vidéo afin de tester les perceptions de l'interlocuteur, ainsi
+qu'une capacité à manipuler des objets que l'examinateur pourrait lui fournir.
+
+% Exemple 1 : Question balèze!
+\begin{centering}
+  {\em Quelle est la valeur de la racine de 25335, une réponse à la louche est
+    demandée?}
+\end{centering}
+
+\paragraph{}
+Voilà la première question que nous pourrions poser afin de déterminer si nous
+avons à faire à un humain ou un ordinateur. Effectivement, afin de donner une
+réponse crédible à cette question, il est nécessaire qu'un programme réussisse
+à répondre avec un degré de précision correspondant à l'expression utilisée et
+aussi après un temps raisonnable pour un humain et non pour un ordinateur. Cette
+question permettrait donc de détecter tout ordinateur qui serait trop performant
+par rapport à un humain.
+
+% Exemple 2 : Mélange de lettres + sentiment
+\begin{centering}
+  {\em Quelle est est l'hitsiore qui t'ait rnedu le plus trsite?}
+\end{centering}
+
+\paragraph{}
+Cette seconde question fait appel à une capacité humaine assez difficile à
+exprimer pour les ordinateurs puisqu'elle fait appel au contenu émotionnel du
+passé de l'interlocuteur. Simultanément elle fait appel à une capacité un peu
+plus poussée du traitement du langage, puisque l'interlocuteur ne doit pas
+seulement être capable de traiter un langage classique, mais un langage avec des
+lettres inversées. Ce traitement qui est effectué assez facilement et très
+naturellement par les humains est en revanche plus compliqué sur un plan
+de traitement automatisé par un programme.
 
 \subsection{Question 2 : Nao}
 
