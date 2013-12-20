@@ -33,8 +33,8 @@ Grâce aux informations reçues elle garde en mémoire en permanence l'état de 
 L'interface entre la perception et le modèle de comportement avait un cahier des charges assez précis. 
 En effet le modèle de comportement étant le centre de l'intelligence, toute l'interface 
 entre les différents blocs a été décidée par rapport à ses besoins. Nous avions donc définit
-une interface simple se basant sur le passage de chaine de caractère. Le but était 
-d'envoyer une chaine de caractère correspondant au stimulus dominant. Les stimuli ne 
+une interface simple se basant sur le passage de chaîne de caractère. Le but était 
+d'envoyer une chaîne de caractère correspondant au stimulus dominant. Les stimuli ne 
 sont pas envoyés périodiquement mais seulement quand il y a un changement dans le 
 stimulus dominant.
 
@@ -45,7 +45,7 @@ l'état courant des stimuli (si ils sont actuellement actifs ou non) et augmente
 actifs et diminue celui des non-actifs. Ce mécanisme permet d'assurer un temps d'échantillonnage égal
 sur chaque capteur.
 
-L'envoi du simulus ayant le plus grand score pouvait poser certains problèmes. Il nous a donc 
+L'envoi du stimulus ayant le plus grand score pouvait poser certains problèmes. Il nous a donc 
 fallu modifier le choix du stimulus dominant pour ne pas envoyer en trois coups d'horloge
 présence, absence, présence ce qui aurait pu fausser le modèle prédictif. 
 Nous avons donc décidé de créer une hystérésis sur les différentes mesures de
