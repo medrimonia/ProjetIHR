@@ -1,0 +1,33 @@
+\paragraph{}
+Notre modèle de décision étant maintenant opérationnel, il nous faut définir une
+réaction appropriée dans chaque cas. Pour cela nous allons utiliser deux boites
+spécifiques fournit par Chorégraphe:\\
+\begin{enumerate}
+  \item La boite TimeLine
+  \item La boite PlaySound
+\end{enumerate}
+
+\paragraph{}
+%Pourquoi ces deux boites?
+Nous avons choisi d'utiliser ces deux boites pour des raisons simples, la
+première nous sert à définir facilement les actions physiques. Cependant ces
+dernières sont assez limitées par la géométrie de Nao, nous allons donc rajouter
+une émission de son pour amplifier l'émotion.
+
+\paragraph{}
+Nous avons implémenté 5 réactions qui sont:\\
+\begin{itemize}
+  \item La peur
+  \item Le soulagement
+  \item La surprise
+  \item La déception
+  \item L'excitation
+\end{itemize}
+
+%Ces différentes actions sont connues par l'intelligence et nous recevons l'ordre
+%de cette dernière que nous traitons ensuite en bloquant les moteurs pour
+%l'action déterminé.
+
+\paragraph{}
+Nous avons décidé que l'intelligence du Nao déterminerait la réaction à
+appliquer. Cependant un problème s'est posé, il arrivait que nous envoyons 
