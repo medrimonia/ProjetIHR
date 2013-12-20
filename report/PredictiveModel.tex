@@ -7,7 +7,7 @@ donc nécessaire de produire une forme d'association entre les différents
 stimuli possibles et les actions simulant des émotions.
 
 \subsubsection{Contexte des émotions}
-En analysant les descriptions des contextes d'apparition des différentese
+En analysant les descriptions des contextes d'apparition des différentes
 émotions, nous avons pu classifier les comportements nécessaires en trois
 catégories distinctes.
 % 3 paragraphes distincts?
@@ -60,7 +60,7 @@ $$P(a) = \frac{|E_a|}{|E|}$$
 Le lissage laplacien permet d'éviter de favoriser des événements trop
 fortement lorsque le nombre d'expériences est faible. Le principe utilisé est
 de définir l'espace des possibilités et d'ajouter $k$ expérience pour chacune
-d'entre elles. Dans le cas du dés, il y aurait donc 6 résultats possibles. Ce
+d'entre elles. Dans le cas du dé, il y aurait donc 6 résultats possibles. Ce
 nombre total de possibilité sera noté $n$. La formule associée au lissage
 laplacien devient donc la suivante.
 
@@ -82,7 +82,7 @@ Les caractéristiques que nous souhaitions remplir avec notre modèle prédictif
 étaient les suivantes :
 \begin{itemize}
 \item Favoriser les éléments récents, particulièrement à court-terme
-\item Prendre en compte le nombre d'occurence des expériences,
+\item Prendre en compte le nombre d'occurrence des expériences,
       particulièrement à moyen terme
 \item Oublier les expériences très vieilles, en convergeant à long terme vers
       une loi uniforme, cette loi uniforme doit aussi être présente dans le
@@ -129,8 +129,8 @@ forme commune avec celle du lissage de Laplace. Celles-ci repose sur une
 fonction de score et peuvent être décrites ainsi~:
 $$P(s,t) = \frac{k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}
                 {|S| * k + \sum\limits_{x \in E} \mathrm{score}(x, t)}$$
-$$P(v| s, t) = \frac{k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}
-                {|S| * k + \sum\limits_{x \in E} \mathrm{score}(x, t)}$$
+$$P(v| s, t) = \frac{k + \sum\limits_{x \in E(s, v)} \mathrm{score}(x, t)}
+                {|V| * k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}$$
 
 \paragraph{}
 L'avantage de ces formules est que si on définit
@@ -141,7 +141,7 @@ $\forall x \in E, \mathrm{score}(x, t) = e^{-(t - t(x))}$ il devient évident qu
 les événements récents auront plus de poids que les vieux. Cependant, cette
 fonction ne nous permettait pas d'obtenir un des aspects que nous souhaitions,
 l'importance du nombre d'expérience à moyen terme. Effectivement en l'absence
-de nouvelles expériences, tous les scores décroiront, laissant ainsi la loi
+de nouvelles expériences, tous les scores décroîtront, laissant ainsi la loi
 tendre vers une loi uniforme.
 
 \paragraph{}
@@ -196,7 +196,7 @@ action est beaucoup plus difficile.
 % Liste de stimuli dynamique
 \paragraph{}
 Afin de rendre l'utilisation de notre modèle plus générique, nous avons utilisé
-des variables globales définissant les stimulis connus, et à chaque fois qu'un
+des variables globales définissant les stimuli connus, et à chaque fois qu'un
 nouveau stimulus est perçu, nous l'ajoutons à cette liste, sans que cela ne
 perturbe notre modèle. Cette aspect permet entre autre de pouvoir ajouter de
 nouveaux objets à la base de données visuelle sans avoir à modifier notre code.
@@ -207,7 +207,7 @@ En discutant avec certains des nos encadrants de cours qui travaille sur la
 thématique de l'apprentissage, nous avons pu apprendre que le principal effet
 qui manquait à ceux que notre système produisait était l'effet de
 réapprentissage qui veut que lorsque l'on a appris quelque chose, même si on
-l'oublie car l'événement ne se reproduit plus, on pourra récupérer facilement
+l'oublie car l'événement ne se reproduit plus, on pourra récupérer plus facilement
 l'association qui a été perdue que si elle n'avait jamais été acquise. Pour
-illustrer cet effet, on nous a cependant recommender d'utiliser deux modèles en
+illustrer cet effet, on nous a cependant recommander d'utiliser deux modèles en
 parallèle et un modèle final qui soit une combinaison des deux.

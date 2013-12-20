@@ -42,7 +42,8 @@ stimulus dominant.
 Afin de déterminer le stimulus dominant nous avons mis en place un système de score. Un timer a 
 été connecté à notre boîte centralisant les informations. \'A chaque tic du timer, la boîte regarde
 l'état courant des stimuli (si ils sont actuellement actifs ou non) et augmente les scores des stimuli
-actifs et diminue celui des non-actifs.
+actifs et diminue celui des non-actifs. Ce mécanisme permet d'assurer un temps d'échantillonnage égal
+sur chaque capteur.
 
 L'envoi du simulus ayant le plus grand score pouvait poser certains problèmes. Il nous a donc 
 fallu modifier le choix du stimulus dominant pour ne pas envoyer en trois coups d'horloge

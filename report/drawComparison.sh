@@ -16,7 +16,7 @@ gnuplot -persist <<PLOT
 set xrange [0:100]
 set yrange [0:1]
 
-set terminal png size 1024,768
+set terminal png size 1024,500
 set output "comparison.png"
 
 set xlabel "Time[s]"
