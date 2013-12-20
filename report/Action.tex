@@ -11,7 +11,7 @@ spécifiques fournit par Chorégraphe:\\
 %Pourquoi ces deux boites?
 Nous avons choisi d'utiliser ces deux boites pour des raisons simples, la
 première nous sert à définir facilement les actions physiques. Cependant ces
-dernières sont assez limitées par la géométrie de Nao, nous allons donc rajouter
+dernières sont assez limitées par la géométrie de Nao, nous avons donc rajouter
 une émission de son pour amplifier l'émotion.
 
 \paragraph{}
@@ -30,4 +30,7 @@ Nous avons implémenté 5 réactions qui sont:\\
 
 \paragraph{}
 Nous avons décidé que l'intelligence du Nao déterminerait la réaction à
-appliquer. Cependant un problème s'est posé, il arrivait que nous envoyons 
+appliquer. Cependant un problème s'est posé, il nous arrivait d'envoyer une
+deuxième demande de réaction avant que la première ne soit fini. Cela avait pour
+effet de rendre instable certaines actions. Nous avons donc décidé de bloquer
+l'appel aux moteurs tant que la réaction à une stimulation ne serait pas finie.
