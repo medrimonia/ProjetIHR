@@ -38,11 +38,10 @@ Nous avons donc décidé de créer un hystérésis sur les différentes mesures 
 capteurs pour filtrer les faux-positifs et les faux-négatifs éventuels. Ce
 dernier est fonction des paramètres de la boite de choregraph.
 
+% Graphe pour l'hysteresis
+
 \paragraph{}
-
-
-% Graphe pour l'hysteresis , en mttant bien qu'on
-
-% Transformation pour l'algo apprentissage
-
-% Envoi des données
+L'incrémentation de ces seuils se fait sur les ticks de timer qui nous
+permettent d'assurer un temps d'échantillonage égal sur chaque capteur.
+Une priorité d'envoi vers l'intelligence est faite sur le premier activé puis
+sur le suivant dans la zone de stockage. 
