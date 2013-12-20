@@ -129,8 +129,8 @@ forme commune avec celle du lissage de Laplace. Celles-ci repose sur une
 fonction de score et peuvent être décrites ainsi~:
 $$P(s,t) = \frac{k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}
                 {|S| * k + \sum\limits_{x \in E} \mathrm{score}(x, t)}$$
-$$P(v| s, t) = \frac{k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}
-                {|S| * k + \sum\limits_{x \in E} \mathrm{score}(x, t)}$$
+$$P(v| s, t) = \frac{k + \sum\limits_{x \in E(s, v)} \mathrm{score}(x, t)}
+                {|V| * k + \sum\limits_{x \in E(s)} \mathrm{score}(x, t)}$$
 
 \paragraph{}
 L'avantage de ces formules est que si on définit
