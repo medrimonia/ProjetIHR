@@ -1,14 +1,14 @@
 import math
 
 #TODO stimuliList and feeling list might be filled dynamically too
-stimuliList = ["Mouchoir", "Mouton", "Caresse", "Tape"]
+stimuliList = ["Stroke", "Tap"]
 feelingList = ["+", "-", "Nothing"]
 
 stimuliValues = {}
 for s in stimuliList:
     stimuliValues[s] = "Nothing"
-stimuliValues["Caresse"] = "+"
-stimuliValues["Tape"] = "-"
+stimuliValues["Stroke"] = "+"
+stimuliValues["Tap"] = "-"
 
 def surpriseThreshold():
     return 0.3 * 1.0 / len(stimuliList)
@@ -75,6 +75,9 @@ class ExperienceDatabase:
         for s in stimuliList:
             self.experiences[s] = StimuliExperiences()
 
+    def newExperience(self, newStimulus):
+        self.experiences[newStimulus] = StimuliExperiences()
+
     def addExperience(self, experience):
         self.experiences[experience.p].addExperience(experience)
 
@@ -110,6 +113,12 @@ class PredictiveModel:
         self.smartHistory = smartHistory
 
     def addStimuli(self, time, newStimuli):
+        global stimuliList
+        if not newStimuli in stimuliList:
+            stimuliList += [newStimuli]
+            stimuliValues[newStimuli] = "Nothing"
+            self.experiences.newExperience(newStimuli)
+
         if (self.lastStimuli != None):
             e = Experience(self.lastStimuli, stimuliValues[newStimuli], time)
             self.experiences.addExperience(e)
