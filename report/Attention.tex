@@ -3,45 +3,58 @@
 \paragraph{}
 Grâce à l'interface de programmation choregraph et de son API , il nous a été
 facile d'accéder aux différents capteurs, cependant le traitement qui était
-effectué ne nous convenait pas. En effet, les boites fournies pas le programme
+effectué ne nous convenait pas. En effet, les boîtes fournies par le programme
 renvoyaient un signal de type bang pour signaler le passage à l'état actif du
 capteur. Ce type de signal ne convenait pas dans notre architecture logicielle
 qui demandait que l'on sache en permanence les différents états de chaque
-groupe de capteurs. De plus nous avons fait le choix d'utiliser les capteurs
-binaire par zone (Mains et tête) comme un seul capteur. Nous avions donc 2 stimuli fixes et
-des stimuli variables (reconnaissance d'objet). Nous avons donc modifié les
-différents blocs pour qu'ils nous retournent un tuple comprenant :
+groupe de capteurs dans le but de pouvoir déterminer un stimulus dominant.
+
+Nous voulions aussi éviter les rebonds au niveau des capteurs tactiles. 
+De même, pour la reconnaissance d'objet nous avons constaté des ``faux-négatif''
+correspondant par exemple aux mouvements. 
+  
+C'est pourquoi nous avons refait nos propres boîtes concernant les capteurs.
+Ces boîtes scrutent les capteurs de manière à renvoyer un doublet de la forme :
 \begin{itemize}
-  \item Le nom du groupe de capteur
+  \item Le nom du stimulus
   \item La valeur~: 1 si un des capteurs est activé , -1 sinon
 \end{itemize}
+ 
+De plus nous avons fait le choix d'utiliser les capteurs binaires par zone 
+(Mains et tête) comme un seul capteur. Nous avions donc 2 stimuli fixes et
+des stimuli variables (reconnaissance d'objet). 
 
 \paragraph{}
-Ces informations étaient transférées par chaque bloc de zone à une boite qui
-s'occupait de centraliser l'envoi des données à l'entité chargée de déterminer la
-réaction à avoir.
+Toutes les boîtes des capteurs sont alors reliées à une boîte centralisant les 
+données. C'est cette boîte qui se charge d'envoyer les informations nécessaires 
+à l'entité chargée de déterminer la réaction à avoir.
+Grâce aux informations reçues elle garde en mémoire en permanence l'état de chaque capteur.
+
+L'interface entre la perception et le modèle de comportement avait un cahier des charges assez précis. 
+En effet le modèle de comportement étant le centre de l'intelligence, toute l'interface 
+entre les différents blocs a été décidée par rapport à ses besoins. Nous avions donc définit
+une interface simple se basant sur le passage de chaine de caractère. Le but était 
+d'envoyer une chaine de caractère correspondant au stimulus dominant. Les stimuli ne 
+sont pas envoyés périodiquement mais seulement quand il y a un changement dans le 
+stimulus dominant.
 
 \paragraph{}
-Cette boite avait un cahier des charges assez précis. En effet la décision de
-comportement étant le centre de l'intelligence, toute la réalisation des signaux
-entre les différents blocs a été décidée par ses besoins.
+Afin de déterminer le stimulus dominant nous avons mis en place un système de score. Un timer a 
+été connecté à notre boîte centralisant les informations. \'A chaque tic du timer, la boîte regarde
+l'état courant des stimuli (si ils sont actuellement actifs ou non) et augmente les scores des stimuli
+actifs et diminue celui des non-actifs.
+
+L'envoi du simulus ayant le plus grand score pouvait poser certains problèmes. Il nous a donc 
+fallu modifier le choix du stimulus dominant pour ne pas envoyer en trois coups d'horloge
+présence, absence, présence ce qui aurait pu fausser le modèle prédictif. 
+Nous avons donc décidé de créer une hystérésis sur les différentes mesures de
+capteurs pour filtrer les faux-positifs et les faux-négatifs éventuels. 
 
 \paragraph{}
-Cela a impliqué une fréquence d'envoi des données fixes pour permettre la
-détermination des actions sans surcharge pour l'intelligence. De plus nous
-nous sommes rendu compte que lors de l'envoi de certains capteurs(
-reconnaissance d'objet notamment) nous avions des ``faux-négatif'' qui
-correspondait à un mouvement de l'objet. Il nous a donc fallu modifier la
-récupération des données pour ne pas envoyer en trois coup d'horloge
-présence, absence, présence ce qui aurait pu fausser le modèle prédictif.
-Nous avons donc décidé de créer un hystérésis sur les différentes mesures de
-capteurs pour filtrer les faux-positifs et les faux-négatifs éventuels. Ce
-dernier est fonction des paramètres de la boite de choregraph.
+Dans les paramètres de la boîte, il est possible de fixer deux seuils.
+Le premier seuil permet de définir à partir de quel score un stimulus devient dominant.
+Si un stimulus franchi ce seuil alors qu'un autre stimulus est déjà dominant rien ne se passent.
+Tant que le stimulus dominant n'est pas repassé en dessous du deuxième seuil il conserve ça place de 
+stimulus dominant.
+Ce mécanisme permet alors d'éviter les oscillations sur le stimulus dominant.
 
-% Graphe pour l'hysteresis
-
-\paragraph{}
-L'incrémentation de ces seuils se fait sur les ticks de timer qui nous
-permettent d'assurer un temps d'échantillonage égal sur chaque capteur.
-Une priorité d'envoi vers l'intelligence est faite sur le premier activé puis
-sur le suivant dans la zone de stockage. 
