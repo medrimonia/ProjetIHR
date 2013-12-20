@@ -3,13 +3,13 @@
 \paragraph{}
 Grâce à l'interface de programmation choregraph et de son API , il nous a été
 facile d'accéder aux différents capteurs, cependant le traitement qui était
-effectué ne nous convenais pas. En effet, les boites fournit pas le programme
-renvoyé un signal de type bang pour signalé le passage à l'état actif du
+effectué ne nous convenait pas. En effet, les boites fournies pas le programme
+renvoyaient un signal de type bang pour signaler le passage à l'état actif du
 capteur. Ce type de signal ne convenait pas dans notre architecture logicielle
 qui demandait que l'on sache en permanence les différents états de chaque
 groupe de capteurs. De plus nous avons fait le choix d'utiliser les capteurs
 binaire par zone (Mains et tête) comme un seul capteur. Nous avions donc 2 stimuli fixes et
-des stimuli variable (reconnaissance d'objet). Nous avons donc modifié les
+des stimuli variables (reconnaissance d'objet). Nous avons donc modifié les
 différents blocs pour qu'ils nous retournent un tuple comprenant :
 \begin{itemize}
   \item Le nom du groupe de capteur
@@ -18,13 +18,13 @@ différents blocs pour qu'ils nous retournent un tuple comprenant :
 
 \paragraph{}
 Ces informations étaient transférées par chaque bloc de zone à une boite qui
-s'occupait de centralisé l'envoi des données à l'entité chargée de déterminer la
+s'occupait de centraliser l'envoi des données à l'entité chargée de déterminer la
 réaction à avoir.
 
 \paragraph{}
 Cette boite avait un cahier des charges assez précis. En effet la décision de
 comportement étant le centre de l'intelligence, toute la réalisation des signaux
-entre les différents blocs a été décidé par ses besoins.
+entre les différents blocs a été décidée par ses besoins.
 
 \paragraph{}
 Cela a impliqué une fréquence d'envoi des données fixes pour permettre la
@@ -33,10 +33,10 @@ nous sommes rendu compte que lors de l'envoi de certains capteurs(
 reconnaissance d'objet notamment) nous avions des ``faux-négatif'' qui
 correspondait à un mouvement de l'objet. Il nous a donc fallu modifier la
 récupération des données pour ne pas envoyer en trois coup d'horloge
-présence,absence,présence ce qui aurait pu fausser les calculs de probabilité.
+présence, absence, présence ce qui aurait pu fausser le modèle prédictif.
 Nous avons donc décidé de créer un hystérésis sur les différentes mesures de
-capteurs pour nous assurer que la sensation est bien là. Ce dernier est fonction
-de paramètre passés dans la boite de choregraph.
+capteurs pour filtrer les faux-positifs et les faux-négatifs éventuels. Ce
+dernier est fonction des paramètres de la boite de choregraph.
 
 \paragraph{}
 
