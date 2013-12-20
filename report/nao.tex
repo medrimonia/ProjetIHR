@@ -1,0 +1,64 @@
+% mini intro
+\subsubsection{Expression}
+\paragraph{}
+Dans le cadre de l'expression d'émotions, les principales faiblesses du Nao
+résident dans l'absence de degrés de liberté dans le visage et
+dans la faible amplitude de ceux disponibles. Effectivement, bien qu'il soit
+capable de lui faire émettre des sons, il n'est pas possible de jouer avec 
+les expressions du visage. Le Nao se situe donc aux antipodes du Kismet
+\footnote{\url{http://www.ai.mit.edu/projects/sociable/baby-bits.html}} qui
+ne possède pas de corps, mais permet d'exprimer de manière convaincante des
+émotions.
+
+% Limitations des degrés de libertés
+\paragraph{}
+Puisqu'il n'a pas de degré de liberté dans le visage, toutes les expressions
+doivent être exprimées aux travers des autres degrés de liberté. Par
+conséquent il est nécessaire de pouvoir s'appuyer entièrement sur les degrés
+de liberté restant. Ceux-ci présentent des amplitudes qui ne ressemblent pas
+à celles d'un humain. Par conséquent, il est parfois impossible d'atteindre
+des positions qui sont naturels chez un humain. Par exemple, le manque
+d'amplitude dans le coude empêche le robot de venir se frotter les yeux avec
+les doigts pour simuler la tristesse. De plus, lorsque l'on souhaite
+exprimer des sentiments présentant une dynamique assez forte, comme
+l'excitation, les moteurs se révèlent trop lent ou leur contrôle trop lissé
+pour permettre des mouvements demandant une forte accélération.
+
+% Stabilité
+\paragraph{}
+L'obligation d'utiliser le corps pour exprimer les émotions engendrent aussi
+des problèmes dont on aimerait pouvoir se passer lorsque l'on se concentre
+sur l'expression de celles-ci. Effectivement, il faut toujours veiller à
+conserver l'équilibre du robot qui devient assez précaire dès qu'il bouge.
+
+% Prosodie
+\paragraph{}
+Ces problèmes d'expression des émotions seraient moins gênant si le
+générateur de voix permettait d'intégrer des aspects prosodique.
+Malheureusement, cet aspect étant encore en pleine recherche, il est naturel
+qu'il ne soit pas implémenté. En revanche, il semble difficile de prétendre
+à une vraie expressivité sur un robot qui ne dispose pas de degrés de
+liberté dans le visage tant qu'une avancée notable n'aura pas été faîte
+dans ce domaine.
+
+\subsubsection{Perception}
+% Reconnaissance vocale boiteuse
+\paragraph{}
+Bien que le Nao possède un système de reconnaissance vocale, la qualité de
+celui-ci reste discutable et il est donc relativement difficile de lui
+faire comprendre quelque chose. La modalité sonore qui nous est
+naturelle est donc difficile à exploiter concrètement.
+
+% Capteurs binaires
+\paragraph{}
+Bien que le Nao soit équipé de capteurs de pression permettant de simuler le
+sens du toucher, le fait que ceux-ci renvoient une réponse binaire est
+relativement gênant. Il n'est pas possible de percevoir la nature du
+contact~: Est-ce que quelqu'un prend le robot par la main ou est-ce qu'il
+vient de le frapper? Est-ce que la prise est ferme ou relâchée? En l'absence
+de réponse à ces questions, les capteurs ne sont plus si différents de
+boutons programmables, comme on pourrait en trouver sur une télécommande.
+Le sens associé à chaque capteur doit donc être programmé et il en ressort
+une interaction qui ne semble pas naturelle.
+
+% Capteurs visuels

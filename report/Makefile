@@ -1,8 +1,6 @@
 BIN=report.pdf
 
-SRC=partieI.tex         \
-    partieII.tex        \
-    PredictiveModel.tex
+SRC=$(wildcard *.tex)
 
 IMAGES=comparison.png
 
